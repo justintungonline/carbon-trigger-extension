@@ -42,7 +42,7 @@ const displayCarbonUsage = async (apiKey, region) => {
 
 		let closestColor = colors[scaleIndex];
 
-		chrome.runtime.sendMessage({ action: 'updateIcon', value: { number: closestNum, color: closestColor } });
+		chrome.runtime.sendMessage({ action: 'updateIcon', value: { number: CO2, color: closestColor } });
 
 		loading.style.display = 'none';
 		form.style.display = 'none';
