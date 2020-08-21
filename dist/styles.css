@@ -51,6 +51,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	background-color: var(--c3);
 	color: var(--c4);
+	min-width: 300px;
 }
 img,
 iframe {
@@ -103,12 +104,12 @@ h6 {
 }
 
 h1 {
-	font-size: 2.625em;
+	font-size: 1.5em;
 	line-height: 1.2;
 }
 
 h2 {
-	font-size: 1.625em;
+	font-size: 1.4em;
 	line-height: 1.2;
 }
 
@@ -159,6 +160,7 @@ textarea,
 button,
 img {
 	border-radius: var(--rc);
+	margin: 5px;
 }
 
 /* Forms */
@@ -171,6 +173,11 @@ textarea {
 	background: var(--c2);
 	border: 0;
 	padding: 0.6em;
+}
+
+label {
+	font-weight: bold;
+	text-align: left;
 }
 
 button,
