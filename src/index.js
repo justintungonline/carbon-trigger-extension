@@ -12,10 +12,28 @@ const results = document.querySelector('.result-container');
 const usage = document.querySelector('.carbon-usage');
 const fossilfuel = document.querySelector('.fossil-fuel');
 const myregion = document.querySelector('.my-region');
+const clearBtn = document.querySelector('clear-btn');
 
 //if anything is in localStorage, pick it up
 const storedApiKey = localStorage.getItem('apiKey');
 const storedRegion = localStorage.getItem('regionName');
+
+const calculateColor = async (value) => {
+	let co2Scale = [0, 150, 600, 750, 800];
+	let colors = ['#2AA364', '#F5EB4D', '#9E4229', '#381D02', '#381D02'];
+
+	let closestNum = co2Scale.sort((a, b) => {
+		return Math.abs(a - value) - Math.abs(b - value);
+	})[0];
+	console.log(value + ' is closest to ' + closestNum);
+	let num = (element) => element > closestNum;
+	let scaleIndex = co2Scale.findIndex(num);
+
+	let closestColor = colors[scaleIndex];
+	console.log(scaleIndex, closestColor);
+
+	chrome.runtime.sendMessage({ action: 'updateIcon', value: { color: closestColor } });
+};
 
 const displayCarbonUsage = async (apiKey, region) => {
 	try {
@@ -28,21 +46,10 @@ const displayCarbonUsage = async (apiKey, region) => {
 				'auth-token': apiKey,
 			},
 		});
-		console.log(response);
 
-		let co2Scale = [0, 150, 600, 750, 800];
-		let colors = ['#2AA364', '#F5EB4D', '#9E4229', '#381D02', '#381D02'];
 		let CO2 = Math.floor(response.data.data.carbonIntensity);
 
-		let closestNum = co2Scale.sort((a, b) => {
-			return Math.abs(a - CO2) - Math.abs(b - CO2);
-		})[0];
-
-		let scaleIndex = co2Scale.findIndex((co2Scale) => co2Scale === closestNum);
-
-		let closestColor = colors[scaleIndex];
-
-		chrome.runtime.sendMessage({ action: 'updateIcon', value: { number: CO2, color: closestColor } });
+		calculateColor(CO2);
 
 		loading.style.display = 'none';
 		form.style.display = 'none';
@@ -71,10 +78,18 @@ const setUpUser = async (apiKey, regionName) => {
 	displayCarbonUsage(apiKey, regionName);
 };
 
-// declare a function to handle form submission
+// handle form submission
 const handleSubmit = async (e) => {
 	e.preventDefault();
 	setUpUser(apiKey.value, region.value);
+};
+
+const reset = async () => {
+	//clear fields, return to form view
+	results.style.display = 'none';
+	form.style.display = 'visible';
+	//clear local storage for region only
+	localStorage.removeItem('regionName');
 };
 
 //initial check to see if repeat visitor
@@ -92,3 +107,4 @@ if (storedApiKey === null && storedRegion === null) {
 }
 
 form.addEventListener('submit', (e) => handleSubmit(e));
+clearBtn.addEventListener('click', () => reset());
