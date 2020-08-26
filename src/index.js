@@ -12,11 +12,7 @@ const results = document.querySelector('.result-container');
 const usage = document.querySelector('.carbon-usage');
 const fossilfuel = document.querySelector('.fossil-fuel');
 const myregion = document.querySelector('.my-region');
-const clearBtn = document.querySelector('clear-btn');
-
-//if anything is in localStorage, pick it up
-const storedApiKey = localStorage.getItem('apiKey');
-const storedRegion = localStorage.getItem('regionName');
+const clearBtn = document.querySelector('.clear-btn');
 
 const calculateColor = async (value) => {
 	let co2Scale = [0, 150, 600, 750, 800];
@@ -26,10 +22,10 @@ const calculateColor = async (value) => {
 		return Math.abs(a - value) - Math.abs(b - value);
 	})[0];
 	console.log(value + ' is closest to ' + closestNum);
-	let num = (element) => element > closestNum;
+	let num = (element) => (element) > closestNum;
 	let scaleIndex = co2Scale.findIndex(num);
 
-	let closestColor = colors[scaleIndex];
+	let closestColor = colors[scaleIndex-1];
 	console.log(scaleIndex, closestColor);
 
 	chrome.runtime.sendMessage({ action: 'updateIcon', value: { color: closestColor } });
@@ -74,6 +70,7 @@ const setUpUser = async (apiKey, regionName) => {
 	localStorage.setItem('regionName', regionName);
 	loading.style.display = 'block';
 	errors.textContent = '';
+	clearBtn.style.display = 'block';
 	//make initial call
 	displayCarbonUsage(apiKey, regionName);
 };
@@ -84,27 +81,45 @@ const handleSubmit = async (e) => {
 	setUpUser(apiKey.value, region.value);
 };
 
-const reset = async () => {
-	//clear fields, return to form view
-	results.style.display = 'none';
-	form.style.display = 'visible';
-	//clear local storage for region only
-	localStorage.removeItem('regionName');
+//initial checks
+const init = async () => {
+	//if anything is in localStorage, pick it up
+	const storedApiKey = localStorage.getItem('apiKey');
+	const storedRegion = localStorage.getItem('regionName');
+
+	//set icon to be generic green
+	chrome.runtime.sendMessage({
+		action: 'updateIcon',
+		value: {
+			color: 'green',
+		},
+	});
+
+	if (storedApiKey === null || storedRegion === null) {
+		//if we don't have the keys, show the form
+		form.style.display = 'block';
+		results.style.display = 'none';
+		loading.style.display = 'none';
+		clearBtn.style.display = 'none';
+		errors.textContent = '';
+	} else {
+		//if we have saved keys/regions in localStorage, show results when they load
+		results.style.display = 'none';
+		form.style.display = 'none';
+		displayCarbonUsage(storedApiKey, storedRegion);
+		clearBtn.style.display = 'block';
+	}
 };
 
-//initial check to see if repeat visitor
-if (storedApiKey === null && storedRegion === null) {
-	//if we don't have the keys, show the form
-	form.style.display = 'visible';
-	results.style.display = 'none';
-	loading.style.display = 'none';
-	errors.textContent = '';
-} else {
-	//if we have saved keys/regions in localStorage, show results when they load
-	results.style.display = 'none';
-	form.style.display = 'none';
-	displayCarbonUsage(storedApiKey, storedRegion);
-}
+const reset = async (e) => {
+	e.preventDefault();
+	//clear local storage for region only
+	localStorage.removeItem('regionName');
+	init();
+};
 
 form.addEventListener('submit', (e) => handleSubmit(e));
-clearBtn.addEventListener('click', () => reset());
+clearBtn.addEventListener('click', (e) => reset(e));
+
+//start app
+init();
