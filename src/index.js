@@ -25,7 +25,7 @@ const calculateColor = async (value) => {
 	let num = (element) => element > closestNum;
 	let scaleIndex = co2Scale.findIndex(num);
 
-	let closestColor = colors[scaleIndex - 1];
+	let closestColor = colors[scaleIndex];
 	//🌱update icon🌱
 };
 
