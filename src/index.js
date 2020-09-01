@@ -21,14 +21,12 @@ const calculateColor = async (value) => {
 	let closestNum = co2Scale.sort((a, b) => {
 		return Math.abs(a - value) - Math.abs(b - value);
 	})[0];
-	console.log(value + ' is closest to ' + closestNum);
-	let num = (element) => (element) > closestNum;
+
+	let num = (element) => element > closestNum;
 	let scaleIndex = co2Scale.findIndex(num);
 
-	let closestColor = colors[scaleIndex-1];
-	console.log(scaleIndex, closestColor);
-
-	chrome.runtime.sendMessage({ action: 'updateIcon', value: { color: closestColor } });
+	let closestColor = colors[scaleIndex - 1];
+	//🌱update icon🌱
 };
 
 const displayCarbonUsage = async (apiKey, region) => {
@@ -43,21 +41,14 @@ const displayCarbonUsage = async (apiKey, region) => {
 			},
 		});
 
-		let CO2 = Math.floor(response.data.data.carbonIntensity);
-
-		calculateColor(CO2);
+		//🌱calculate color of icon, based on carbon intensity🌱
 
 		loading.style.display = 'none';
 		form.style.display = 'none';
 		myregion.textContent = region;
-		usage.textContent =
-			Math.round(response.data.data.carbonIntensity) + ' grams (grams C02 emitted per kilowatt hour)';
-		fossilfuel.textContent =
-			response.data.data.fossilFuelPercentage.toFixed(2) +
-			'% (percentage of fossil fuels used to generate electricity)';
+		//🌱display usage and carbon source🌱
 		results.style.display = 'block';
 	} catch (error) {
-		console.log(error);
 		loading.style.display = 'none';
 		results.style.display = 'none';
 		errors.textContent = 'Sorry, we have no data for the region you have requested.';
@@ -66,13 +57,11 @@ const displayCarbonUsage = async (apiKey, region) => {
 
 // set up api key and region
 const setUpUser = async (apiKey, regionName) => {
-	localStorage.setItem('apiKey', apiKey);
-	localStorage.setItem('regionName', regionName);
+	//🌱manage local storage🌱
 	loading.style.display = 'block';
 	errors.textContent = '';
 	clearBtn.style.display = 'block';
-	//make initial call
-	displayCarbonUsage(apiKey, regionName);
+	//🌱make initial call🌱
 };
 
 // handle form submission
@@ -83,17 +72,9 @@ const handleSubmit = async (e) => {
 
 //initial checks
 const init = async () => {
-	//if anything is in localStorage, pick it up
-	const storedApiKey = localStorage.getItem('apiKey');
-	const storedRegion = localStorage.getItem('regionName');
+	//🌱if anything is in localStorage, pick it up🌱
 
-	//set icon to be generic green
-	chrome.runtime.sendMessage({
-		action: 'updateIcon',
-		value: {
-			color: 'green',
-		},
-	});
+	//🌱set icon to be generic green🌱
 
 	if (storedApiKey === null || storedRegion === null) {
 		//if we don't have the keys, show the form
