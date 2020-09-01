@@ -22,10 +22,10 @@ const calculateColor = async (value) => {
 		return Math.abs(a - value) - Math.abs(b - value);
 	})[0];
 	console.log(value + ' is closest to ' + closestNum);
-	let num = (element) => (element) > closestNum;
+	let num = (element) => element > closestNum;
 	let scaleIndex = co2Scale.findIndex(num);
 
-	let closestColor = colors[scaleIndex-1];
+	let closestColor = colors[scaleIndex];
 	console.log(scaleIndex, closestColor);
 
 	chrome.runtime.sendMessage({ action: 'updateIcon', value: { color: closestColor } });
