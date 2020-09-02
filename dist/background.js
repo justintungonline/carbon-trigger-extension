@@ -1,6 +1,6 @@
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
 	if (msg.action === 'updateIcon') {
-		//🌱set the icon🌱
+		//🌱 8. set the icon🌱
 	}
 });
 //borrowed from energy lollipop extension, nice feature!

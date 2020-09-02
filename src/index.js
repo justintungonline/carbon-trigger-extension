@@ -26,7 +26,7 @@ const calculateColor = async (value) => {
 	let scaleIndex = co2Scale.findIndex(num);
 
 	let closestColor = colors[scaleIndex];
-	//🌱update icon🌱
+	//🌱 7. update icon🌱
 };
 
 const displayCarbonUsage = async (apiKey, region) => {
@@ -41,12 +41,12 @@ const displayCarbonUsage = async (apiKey, region) => {
 			},
 		});
 
-		//🌱calculate color of icon, based on carbon intensity🌱
+		//🌱6. calculate color of icon, based on carbon intensity🌱
 
 		loading.style.display = 'none';
 		form.style.display = 'none';
 		myregion.textContent = region;
-		//🌱display usage and carbon source🌱
+		//🌱4. display usage and carbon source🌱
 		results.style.display = 'block';
 	} catch (error) {
 		loading.style.display = 'none';
@@ -57,11 +57,11 @@ const displayCarbonUsage = async (apiKey, region) => {
 
 // set up api key and region
 const setUpUser = async (apiKey, regionName) => {
-	//🌱manage local storage🌱
+	//🌱 2. manage local storage🌱
 	loading.style.display = 'block';
 	errors.textContent = '';
 	clearBtn.style.display = 'block';
-	//🌱make initial call🌱
+	//🌱 3. make initial call🌱
 };
 
 // handle form submission
@@ -72,9 +72,9 @@ const handleSubmit = async (e) => {
 
 //initial checks
 const init = async () => {
-	//🌱if anything is in localStorage, pick it up🌱
+	//🌱 1. if anything is in localStorage, pick it up🌱
 
-	//🌱set icon to be generic green🌱
+	//🌱 5. set icon to be generic green🌱
 
 	if (storedApiKey === null || storedRegion === null) {
 		//if we don't have the keys, show the form
