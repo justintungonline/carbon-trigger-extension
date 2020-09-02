@@ -31,24 +31,27 @@ const calculateColor = async (value) => {
 
 const displayCarbonUsage = async (apiKey, region) => {
 	try {
-		const response = await axios.get('https://api.co2signal.com/v1/latest', {
-			params: {
-				countryCode: region,
-			},
-			headers: {
-				//please get your own token from CO2Signal https://www.co2signal.com/
-				'auth-token': apiKey,
-			},
-		});
+		await axios
+			.get('https://api.co2signal.com/v1/latest', {
+				params: {
+					countryCode: region,
+				},
+				headers: {
+					//please get your own token from CO2Signal https://www.co2signal.com/
+					'auth-token': apiKey,
+				},
+			})
+			.then((response) => {
+				//🌱6. calculate color of icon, based on carbon intensity🌱
 
-		//🌱6. calculate color of icon, based on carbon intensity🌱
-
-		loading.style.display = 'none';
-		form.style.display = 'none';
-		myregion.textContent = region;
-		//🌱4. display usage and carbon source🌱
-		results.style.display = 'block';
+				loading.style.display = 'none';
+				form.style.display = 'none';
+				myregion.textContent = region;
+				//🌱4. display usage and carbon source🌱
+				results.style.display = 'block';
+			});
 	} catch (error) {
+		console.log(error);
 		loading.style.display = 'none';
 		results.style.display = 'none';
 		errors.textContent = 'Sorry, we have no data for the region you have requested.';
