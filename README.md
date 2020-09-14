@@ -4,7 +4,7 @@ Huge props to Adebola who build a useful [extension](https://github.com/onedebos
 
 I have taken this code and edited it to work with tmrow's API to track electricity usage, so that you can have a reminder right in your browser about how heavy your region's electricity usage is, and to make judgement calls on your activities based on this information.
 
-![extension screenshot](extensiion-screenshot.png)
+![extension screenshot](./extensiion-screenshot.png)
 
 ## Getting Started
 
