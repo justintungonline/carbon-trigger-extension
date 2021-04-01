@@ -15,7 +15,7 @@ To get a local copy of this extension up and running follow these steps.
 -   git clone the repo
 
 ```
-git clone https://github.com/jlooper/carbontrigger && cd carbontrigger
+git clone https://github.com/jlooper/carbon-trigger-extension && cd carbon-trigger-extension
 ```
 
 -   Install all the required packages with
