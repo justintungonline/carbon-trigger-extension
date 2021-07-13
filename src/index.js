@@ -27,6 +27,7 @@ const calculateColor = async (value) => {
 
 	let closestColor = colors[scaleIndex];
 	//🌱 7. update icon🌱
+	chrome.runtime.sendMessage({ action: 'updateIcon', value: { color: closestColor } });
 };
 
 const displayCarbonUsage = async (apiKey, region) => {
@@ -43,12 +44,19 @@ const displayCarbonUsage = async (apiKey, region) => {
 			})
 			.then((response) => {
 				//🌱6. calculate color of icon, based on carbon intensity🌱
+				let CO2 = Math.floor(response.data.data.carbonIntensity);
+				calculateColor(CO2);
 
 				loading.style.display = 'none';
 				form.style.display = 'none';
 				myregion.textContent = region;
 				//🌱4. display usage and carbon source🌱
 				results.style.display = 'block';
+				usage.textContent =
+					Math.round(response.data.data.carbonIntensity) + ' grams (grams C02 emitted per kilowatt hour)';
+
+				fossilfuel.textContent =
+					response.data.data.fossilFuelPercentage.toFixed(2) + '% (percentage of fossil fuels used to generate electricity)';
 			});
 	} catch (error) {
 		console.log(error);
@@ -61,10 +69,13 @@ const displayCarbonUsage = async (apiKey, region) => {
 // set up api key and region
 const setUpUser = async (apiKey, regionName) => {
 	//🌱 2. manage local storage🌱
+	localStorage.setItem('apiKey', apiKey);
+	localStorage.setItem('regionName', regionName);
 	loading.style.display = 'block';
 	errors.textContent = '';
 	clearBtn.style.display = 'block';
 	//🌱 3. make initial call🌱
+	displayCarbonUsage(apiKey, regionName);
 };
 
 // handle form submission
@@ -76,10 +87,18 @@ const handleSubmit = async (e) => {
 //initial checks
 const init = async () => {
 	//🌱 1. if anything is in localStorage, pick it up🌱
+	// see if any API key or Region has been set in localStorage
+	const storedApiKey = localStorage.getItem('apiKey');
+	const storedRegion = localStorage.getItem('regionName');
 
 	//🌱 5. set icon to be generic green🌱
+	chrome.runtime.sendMessage({
+		action: 'updateIcon',
+		value: {
+			color: 'green',
+		},
 
-	if (storedApiKey === null || storedRegion === null) {
+		if(storedApiKey === null || storedRegion === null) {
 		//if we don't have the keys, show the form
 		form.style.display = 'block';
 		results.style.display = 'none';
