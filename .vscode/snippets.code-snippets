@@ -1,0 +1,40 @@
+{
+	"1": {
+		"prefix": ["1"],
+		"body": [
+			"const storedApiKey = localStorage.getItem('apiKey');",
+			"const storedRegion = localStorage.getItem('regionName');"
+		]
+	},
+	"2": {
+		"prefix": ["2"],
+		"body": ["localStorage.setItem('apiKey', apiKey);", "localStorage.setItem('regionName', regionName);"]
+	},
+	"3": {
+		"prefix": ["3"],
+		"body": ["displayCarbonUsage(apiKey,regionName)"]
+	},
+	"4": {
+		"prefix": ["4"],
+		"body": [
+			"usage.textContent = Math.round(response.data.data.carbonIntensity) + 'grams (grams C02 emitted per kilowatt hour)';",
+			"fossilfuel.textContent = response.data.data.fossilFuelPercentage.toFixed(2) + '% (percentage of fossil fuels used to generate electricity)'"
+		]
+	},
+	"5": {
+		"prefix": ["5"],
+		"body": ["chrome.runtime.sendMessage({ action: 'updateIcon', value: { color: 'green',},});"]
+	},
+	"6": {
+		"prefix": ["6"],
+		"body": ["let C02 = Math.floor(response.data.data.carbonIntensity); calculateColor(C02);"]
+	},
+	"7": {
+		"prefix": ["7"],
+		"body": ["chrome.runtime.sendMessage({ action: 'updateIcon', value: { color: closestColor } });"]
+	},
+	"8": {
+		"prefix": ["8"],
+		"body": ["chrome.browserAction.setIcon( { imageData: drawIcon(msg.value) });"]
+	}
+}
