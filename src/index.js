@@ -68,9 +68,9 @@ const displayCarbonUsage = async (apiKey, region) => {
 
 // set up api key and region
 const setUpUser = async (apiKey, regionName) => {
-	//🌱 2. manage local storage🌱
+	//🌱 2. manage local storage🌱 set your apiKey from and your region code (check URL) from https://www.electricitymap.org/map
 	localStorage.setItem('apiKey', apiKey);
-	localStorage.setItem('regionName', regionName);
+	localStorage.setItem('CA-ON', regionName);
 	loading.style.display = 'block';
 	errors.textContent = '';
 	clearBtn.style.display = 'block';
@@ -92,13 +92,15 @@ const init = async () => {
 	const storedRegion = localStorage.getItem('regionName');
 
 	//🌱 5. set icon to be generic green🌱
+
 	chrome.runtime.sendMessage({
 		action: 'updateIcon',
 		value: {
 			color: 'green',
 		},
+	});
 
-		if(storedApiKey === null || storedRegion === null) {
+	if (storedApiKey === null || storedRegion === null) {
 		//if we don't have the keys, show the form
 		form.style.display = 'block';
 		results.style.display = 'none';
