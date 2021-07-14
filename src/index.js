@@ -70,7 +70,7 @@ const displayCarbonUsage = async (apiKey, region) => {
 const setUpUser = async (apiKey, regionName) => {
 	//🌱 2. manage local storage🌱 set your apiKey from https://co2signal.com/ and your region code (check URL) from https://www.electricitymap.org/map
 	localStorage.setItem('apiKey', apiKey);
-	localStorage.setItem('CA-ON', regionName);
+	localStorage.setItem('regionName', regionName);
 	loading.style.display = 'block';
 	errors.textContent = '';
 	clearBtn.style.display = 'block';
