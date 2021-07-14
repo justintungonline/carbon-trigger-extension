@@ -22,8 +22,12 @@ const calculateColor = async (value) => {
 		return Math.abs(a - value) - Math.abs(b - value);
 	})[0];
 
+	console.log(value + ' is closest to ' + closestNum);
 	let num = (element) => element > closestNum;
 	let scaleIndex = co2Scale.findIndex(num);
+
+	let closestColor = colors[scaleIndex];
+	console.log(scaleIndex, closestColor);
 
 	let closestColor = colors[scaleIndex];
 	//🌱 7. update icon🌱
@@ -43,20 +47,23 @@ const displayCarbonUsage = async (apiKey, region) => {
 				},
 			})
 			.then((response) => {
+
 				//🌱6. calculate color of icon, based on carbon intensity🌱
 				let CO2 = Math.floor(response.data.data.carbonIntensity);
+
 				calculateColor(CO2);
 
 				loading.style.display = 'none';
 				form.style.display = 'none';
 				myregion.textContent = region;
-				//🌱4. display usage and carbon source🌱
-				results.style.display = 'block';
+
+        //🌱4. display usage and carbon source🌱
 				usage.textContent =
 					Math.round(response.data.data.carbonIntensity) + ' grams (grams C02 emitted per kilowatt hour)';
 
 				fossilfuel.textContent =
 					response.data.data.fossilFuelPercentage.toFixed(2) + '% (percentage of fossil fuels used to generate electricity)';
+				results.style.display = 'block';
 			});
 	} catch (error) {
 		console.log(error);
