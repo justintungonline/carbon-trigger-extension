@@ -1,6 +1,6 @@
 # Carbon Trigger Browser Extension
 
-[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/justintungonline/carbon-trigger-extension/tree/start)
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/justunsix/carbon-trigger-extension/tree/start)
 
 Huge props to Adebola who build a useful [extension](https://github.com/onedebos/covtension) for Chrome and Edge to track COVID country by country via API calls. He wrote an excellent [article](https://blog.adebola.dev/how-to-build-a-chrome-extension-that-makes-api-calls/) about it.
 
