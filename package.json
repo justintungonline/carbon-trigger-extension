@@ -16,7 +16,7 @@
 	"author": "Jen Looper",
 	"license": "MIT",
 	"devDependencies": {
-		"webpack": "^4.44.1",
+		"webpack": "^4.46.0",
 		"webpack-cli": "^3.3.12"
 	},
 	"dependencies": {
